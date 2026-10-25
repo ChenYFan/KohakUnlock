@@ -15,7 +15,13 @@ This repository documents a successful **Linux/initramfs port for one VRAM-modif
 | 2080 Ti FP16→FP32 `mmapeak`, 32×8×16 | 59.9 TFLOPS | 111.0 TFLOPS | Same card before/after; +85.3% |
 | 2080 Ti FP16→FP16 control | 119.5 TFLOPS | 118.5 TFLOPS | Same card; essentially unchanged |
 | 2080 Ti best MAMF median, 125-shape sweep | 57.71 TFLOPS | 88.24 TFLOPS | Two same-model cards; +52.9%, not same-card A/B |
-| Four 3090s, BF16 8192³ PyTorch GEMM | No valid same-card baseline | 118.39–130.39 TFLOPS | Sequential card tests at 360 W |
+| One 3090, FP16→FP32 8192³ PyTorch GEMM | 73.03 TFLOPS | 122.76 TFLOPS | Recovered same-card observation; +68.1%* |
+| One 3090, BF16→FP32 8192³ PyTorch GEMM | 73.82 TFLOPS | 126.57 TFLOPS | Recovered same-card observation; +71.5%* |
+| One 3090, TF32 8192³ PyTorch GEMM | 38.48 TFLOPS | 65.42 TFLOPS | Recovered same-card observation; +70.0%* |
+| One 3090, ordinary FP32 8192³ GEMM | 27.60 TFLOPS | 25.59 TFLOPS | Control; −7.3% under differing conditions* |
+| Four 3090s, BF16 8192³ PyTorch GEMM | Baseline recovered for one card only | 118.39–130.39 TFLOPS | Sequential card tests at 360 W |
+
+*The early baseline was mislabeled as targeting `82:00.0`, but telemetry and the subsequent CUDA identity check attribute it to `01:00.0`, later measured unlocked. Same script hash, PyTorch version and timing windows; **stock 370 W versus unlocked 360 W, different cooling/thermal history and shape order**. These are same-card observations, not a fully controlled A/B. Percentages use unrounded measurements; no per-card stock baselines exist for the other three.
 
 See [results and limitations](docs/RESULTS.md). A successful kernel log alone is not proof of higher throughput. BF16/TF32 are not added to Turing. This is not a claim of a 2× application/game speedup.
 

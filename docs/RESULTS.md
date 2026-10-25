@@ -37,7 +37,22 @@ Separate single-shape runs: 4096³ locked/unlocked median 54.34/76.99; 8192³ 55
 
 ## Ampere
 
-Four 3090s, sequential PyTorch 8192³ tests at 360 W: FP16 122.76/122.96/127.40/115.21; BF16 126.57/127.45/130.39/118.39 TFLOPS. Numerical sanity checks passed in that run. An early baseline used the wrong GPU selector, so we do not report a same-card before/after percentage for those four cards.
+Four 3090s, sequential PyTorch 8192³ tests at 360 W: FP16 122.76/122.96/127.40/115.21; BF16 126.57/127.45/130.39/118.39 TFLOPS. Numerical sanity checks passed in that run.
+
+### Recovered stock baseline for one card
+
+The early `unlock-stock-82.json` capture was labeled for `82:00.0`, but the PCI-address CUDA selector actually selected `01:00.0`. Its per-window telemetry shows that card boosting while the intended target remained idle; a later explicit CUDA properties query using the same selection confirmed `01:00.0`. The later four-card run selected this card by UUID. The baseline is therefore useful for **that one physical card**, not the originally intended card or the entire four-card set.
+
+| 8192³ GEMM mode | Stock TFLOPS | Unlocked TFLOPS | Observed change |
+|---|---:|---:|---:|
+| FP16→FP32 accumulation | 73.03 | 122.76 | +68.1% |
+| BF16→FP32 accumulation | 73.82 | 126.57 | +71.5% |
+| TF32 | 38.48 | 65.42 | +70.0% |
+| Ordinary FP32 | 27.60 | 25.59 | −7.3% |
+
+Both saved reports have benchmark script SHA256 `64b4ed9fed4c50da812c8c3529aa9cc535d5f6cda5cbf1c4c473fa8a147aefe8`, PyTorch 2.13.0+cu130, five timing windows and ten iterations/window. Numerical-check output hashes match for each mode; these are the script's bounded correctness cases, not whole large-GEMM parity tests.
+
+**Not a controlled A/B:** stock power cap 370 W, unlocked cap 360 W; cooling, clocks and thermal history differ. Stock swept 4096 and 8192, while the unlocked comparison ran 8192 only. Percentages are calculated from unrounded medians. A separate recovered-stock run also measured approximately 73.40 FP16 / 73.60 BF16 / 38.37 TF32 / 25.52 FP32 TFLOPS, illustrating variation, particularly in the FP32 control. No individual stock baselines were recovered for the remaining three cards.
 
 ## What is NOT established
 

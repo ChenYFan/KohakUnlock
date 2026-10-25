@@ -52,7 +52,7 @@ Host suite covers 445 protocol cases and 104 sequencing-policy combinations; pol
 - mmapeak tests issue throughput; PyTorch GEMM includes layout/memory/power bottlenecks. Compare the same instruction/accumulation mode.
 - Turing has no native BF16/TF32 tensor path. FP16→FP32 is the relevant target; FP16→FP16 is the control.
 - Do not silently replace an original benchmark with long calibrated samples, per-shape GC, correctness copies and telemetry subprocesses, then call numbers comparable. Presentation changes and methodology changes are separate tasks.
-- Our earlier Ampere baseline targeted another GPU: no same-card percentage is claimed. MAMF Turing baseline uses the untouched same-model card: distinguish it from same-card mmapeak A/B.
+- Our earlier Ampere baseline targeted another GPU, but telemetry and a subsequent identity check recovered its attribution to 01:00.0. A later UUID-targeted measurement gives a same-card comparison with different power/cooling conditions; see RESULTS.md. Do not discard recoverable measurements or hide their confounders. MAMF Turing baseline uses the untouched same-model card: distinguish it from same-card mmapeak A/B.
 
 ## Publishing
 
