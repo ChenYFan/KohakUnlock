@@ -1,0 +1,21 @@
+#!/bin/sh
+# Must run BEFORE init-top/udev. Template for the historical exact profile.
+case "${1:-}" in prereqs) exit 0;; esac
+cmdline=" $(cat /proc/cmdline) "
+case "$cmdline" in *" tu102_execute.target=0000:42:00.0 "*) ;; *) exit 0;; esac
+case "$cmdline" in *" tu102_execute.execute=1 "*) ;; *) exit 0;; esac
+if modprobe tu102_execute; then
+    safe=$(cat /sys/module/tu102_execute/parameters/handoff_safe 2>/dev/null)
+    result=$(cat /sys/module/tu102_execute/parameters/result 2>/dev/null)
+    echo "tu102_execute gate: result=$result safe=$safe" > /dev/kmsg
+    if [ "$safe" != Y ]; then
+        dmesg | grep tu102_execute > /dev/console
+        echo 'STOP: uncertain GPU state. FULL POWER OFF/ON to known-good entry.' > /dev/console
+        echo 'Do not bind NVIDIA, clear override, unload or continue this boot.' > /dev/console
+        while :; do /bin/sh </dev/console >/dev/console 2>&1; done
+    fi
+else
+    # Init returns errors only before its transaction begins. Later errors use result/safe.
+    echo 'tu102_execute load refused; no retry; inspect kernel log' > /dev/kmsg
+fi
+exit 0

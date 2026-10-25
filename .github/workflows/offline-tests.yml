@@ -1,0 +1,17 @@
+name: Offline tests
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  host-tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Firmware-free host tests only
+        run: make test
+      - name: Check boot-template syntax
+        run: |
+          sh -n tools/initramfs-hook.example
+          sh -n tools/initramfs-gate.example
+      - name: Publication boundary
+        run: python3 tools/audit_public.py

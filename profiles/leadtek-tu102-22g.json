@@ -1,0 +1,22 @@
+{
+  "profile": "leadtek-tu102-22g-experimental",
+  "execution_supported_generically": false,
+  "vram_modded": true,
+  "stock_vram_gib": 11,
+  "tested_vram_gib": 22,
+  "memory_note": "Physical VRAM modification predates compute unlock; software does not add memory",
+  "pci_id": "10de:1e04",
+  "subsystem_id": "107d:1e04",
+  "vbios_version": "90.02.33.00.3F",
+  "framebuffer_bytes": 23622320128,
+  "historical_target": "0000:42:00.0",
+  "cmp_source": "https://github.com/xrip/cmp50hx-unlock",
+  "cmp_commit": "df2fe11b370bb52cc314576d0f2f5ae47ce908f8",
+  "assets": [
+    {"name": "leadtek-fwsec.bin", "bytes": 39968, "sha256": "c6fa28fa2458f7bce2aeb422a2e57cce3885ff65c779e1077f682c23d097a635", "origin": "own native PROM; tools/rom_analyze.py"},
+    {"name": "bl_gsp_tu102.bin", "bytes": 768, "sha256": "f21f1cfbb8fffa8067685314367fc4c50f3f84dd99eda7c19db4292d9269b9d9", "origin": "pinned CMP efi-unlock/blobs"},
+    {"name": "booter_ucode_prod.bin", "bytes": 59136, "sha256": "e0f0fc93da097b5b68e5af3adb58b2235ed1fad5fce0b23592d3895af44cb743", "origin": "pinned CMP efi-unlock/blobs"},
+    {"name": "v67_payload.bin", "bytes": 64000, "sha256": "de7288bcfb80c2d4b259a59e823c926ba0a9adcab594219cc6802c94257ce271", "origin": "pinned CMP efi-unlock/blobs"},
+    {"name": "gsp_rm_boot_dbg.bin", "bytes": 131072, "sha256": "fa43239bcee7b97ca62f007cc68487560a39e19f74f3dde7486db3f98df8e471", "origin": "pinned CMP efi-unlock/blobs; only first 0x6000 used"}
+  ]
+}
