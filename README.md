@@ -21,6 +21,8 @@ This repository documents a successful **Linux/initramfs port for one VRAM-modif
 
 See [results and limitations](docs/RESULTS.md). A successful kernel log alone is not proof of higher throughput. BF16/TF32 are not added to Turing. This is not a claim of a 2× application/game speedup.
 
+> **Support update:** TU102-300A (`10de:1e07`, 22 GiB) on kernel 7.0.0-30 is also supported; see [profile notes](docs/PROFILE-NVIDIA-22G.md).
+
 ## Start here
 
 1. [Safety and scope](docs/SAFETY.md)
